@@ -20,7 +20,9 @@ Introduction
 -------------
 This module can automatically download the dependencies required by modules.
 
-* __[Learn more](https://github.com/PeratX/WraithSpire/wiki)__
+Database
+-------------
+__[WraithSpireDatabase](https://github.com/PeratX/WraithSpireDatabase)__
 
 Get WraithSpire
 -------------
