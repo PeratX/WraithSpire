@@ -18,11 +18,14 @@ use PeratX\SimpleFramework\Console\TextFormat;
 use PeratX\SimpleFramework\Framework;
 use PeratX\SimpleFramework\Module\Module;
 use PeratX\SimpleFramework\Module\ModuleDependencyResolver;
+use PeratX\SimpleFramework\Util\Config;
 use PeratX\SimpleFramework\Util\Util;
 
 class WraithSpire extends Module implements ModuleDependencyResolver{
 	private $resolved = false;
 	private $database;
+	/** @var Config */
+	private $config;
 
 	public function preLoad(): bool{
 		if($this->getInfo()->getAPILevel() > Framework::API_LEVEL){
@@ -31,11 +34,21 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 		$this->getFramework()->registerModuleDependencyResolver($this);
 
 		@mkdir($this->getDataFolder());
-		$this->database = $this->getDataFolder() . "database.yaml";
-		if(!file_exists($this->database)){
+
+		$this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML, [
+			"auto-update-database" => true,
+		]);
+
+		$this->database = $this->getDataFolder() . "database.yml";
+		if(!file_exists($this->database) or
+			!file_exists($this->getDataFolder() . "version") or
+			($this->config->get("auto-update-database", true) and
+				Util::getURL("https://raw.githubusercontent.com/PeratX/WraithSpireDatabase/master/version") != file_get_contents($this->getDataFolder() . "version"))){
+
 			Logger::info(TextFormat::AQUA . "Downloading WraithSpire Module Database file...");
-			file_put_contents($this->database, Util::getURL(""));
+			file_put_contents($this->database, Util::getURL("https://raw.githubusercontent.com/PeratX/WraithSpireDatabase/master/database.yml"));
 		}
+		$this->database = (new Config($this->database, Config::YAML))->getAll();
 
 		return true;
 	}
