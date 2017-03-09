@@ -78,18 +78,23 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 			Logger::info(TextFormat::RED . $moduleName . " requires dependency $name does not have a vendor, please contact the author of the module or manually resolve its dependency.");
 			return false;
 		}
+		$needRestart = false;
 		if(($module = $this->framework->getModule($name)) instanceof Module){
 			if($module->getInfo()->getLoadMethod() == ModuleInfo::LOAD_METHOD_SOURCE){
 				Logger::info(TextFormat::RED . "Please manually remove the source folder of " . $module->getInfo()->getName() . " then the dependency resolver can download the specifying module.");
 				return false;
 			}
 			rename($module->getFile(), $module->getFile() . ".old");
+			$needRestart = true;
 		}
 		if(isset($this->database[$vendor][$name][$version])){
 			$link = $this->database[$vendor][$name][$version];
 			$fileName = explode("/", $link);
 			$fileName = end($fileName);
 			self::downloadFile($this->getFramework()->getModulePath() . $fileName, $link);
+			if($needRestart){
+				Logger::info(TextFormat::AQUA . "You must restart this program after resolved dependencies.");
+			}
 			return $this->getFramework()->tryloadModule($this->getFramework()->getModulePath() . $fileName);
 		}
 		return false;
