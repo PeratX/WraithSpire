@@ -14,18 +14,29 @@
 namespace PeratX\WraithSpire;
 
 use PeratX\SimpleFramework\Console\Logger;
+use PeratX\SimpleFramework\Console\TextFormat;
 use PeratX\SimpleFramework\Framework;
 use PeratX\SimpleFramework\Module\Module;
 use PeratX\SimpleFramework\Module\ModuleDependencyResolver;
+use PeratX\SimpleFramework\Util\Util;
 
 class WraithSpire extends Module implements ModuleDependencyResolver{
 	private $resolved = false;
+	private $database;
 
 	public function preLoad(): bool{
-		$this->getFramework()->registerModuleDependencyResolver($this);
 		if($this->getInfo()->getAPILevel() > Framework::API_LEVEL){
 			throw new \Exception("Plugin requires API Level: " . $this->getInfo()->getAPILevel() . " Current API Level: " . Framework::API_LEVEL);
 		}
+		$this->getFramework()->registerModuleDependencyResolver($this);
+
+		@mkdir($this->getDataFolder());
+		$this->database = $this->getDataFolder() . "database.yaml";
+		if(!file_exists($this->database)){
+			Logger::info(TextFormat::AQUA . "Downloading WraithSpire Module Database file...");
+			file_put_contents($this->database, Util::getURL(""));
+		}
+
 		return true;
 	}
 
@@ -40,6 +51,10 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 			$this->resolveDependency($this);
 			$this->resolved = true;
 		}
+	}
+
+	public function downloadDependency(string $name, string $version){
+
 	}
 
 	public function resolveDependency(Module $module){
@@ -73,6 +88,7 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 			}
 			if($error == true){
 				Logger::error("Module " . '"' . $this->getInfo()->getName() . '"' . " requires dependency module " . '"' . $name . '"' . " version " . $dependency["version"] . ". Resolving dependency...");
+				$this->downloadDependency($dependency["name"], $dependency["version"]);
 				return false;
 			}
 		}
