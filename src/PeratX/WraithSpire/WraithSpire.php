@@ -8,19 +8,20 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author PeratX
+ * @author iTXTech
+ * @website https://itxtech.org
  */
 
 namespace PeratX\WraithSpire;
 
-use PeratX\SimpleFramework\Console\Logger;
-use PeratX\SimpleFramework\Console\TextFormat;
-use PeratX\SimpleFramework\Framework;
-use PeratX\SimpleFramework\Module\Module;
-use PeratX\SimpleFramework\Module\ModuleDependencyResolver;
-use PeratX\SimpleFramework\Module\ModuleInfo;
-use PeratX\SimpleFramework\Util\Config;
-use PeratX\SimpleFramework\Util\Util;
+use iTXTech\SimpleFramework\Console\Logger;
+use iTXTech\SimpleFramework\Console\TextFormat;
+use iTXTech\SimpleFramework\Framework;
+use iTXTech\SimpleFramework\Module\Module;
+use iTXTech\SimpleFramework\Module\ModuleDependencyResolver;
+use iTXTech\SimpleFramework\Module\ModuleInfo;
+use iTXTech\SimpleFramework\Util\Config;
+use iTXTech\SimpleFramework\Util\Util;
 
 class WraithSpire extends Module implements ModuleDependencyResolver{
 
