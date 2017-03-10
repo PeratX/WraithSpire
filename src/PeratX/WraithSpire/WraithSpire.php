@@ -67,9 +67,8 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 
 	private function getModuleData(string $vendor, string $name, string $version){
 		$link = $this->database . "$vendor/$name/$version.json";
-		var_dump($link);
 		$i = 1;
-		while(($result = Util::getURL($link)) === false and $i < 3){
+		while(($result = Util::getURL($link)) === false and $i <= 3){
 			Logger::alert("Obtaining module data for $vendor/$name version $version failed, retrying $i...");
 			$i++;
 		}
@@ -78,7 +77,7 @@ class WraithSpire extends Module implements ModuleDependencyResolver{
 			return false;
 		}
 		if(strstr($result, "404: Not Found")){
-			Logger::alert("Not found module data for $vendor/$name version $version.");
+			Logger::alert("Not found module data for $vendor/$name version $version .");
 			return false;
 		}
 		return json_decode($result, true);
