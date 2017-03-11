@@ -1,7 +1,7 @@
 WraithSpire
 ===================
 
-__The Module Dependency Resolver designed for [SimpleFramework](https://github.com/PeratX/SimpleFramework), like composer.__
+__The Module Dependency Resolver designed for [SimpleFramework](https://github.com/iTXTech/SimpleFramework), like composer.__
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
